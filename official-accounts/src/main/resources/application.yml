@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /officialAccounts
+spring:
+  resources:
+    add-mappings: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  redis:
+         database: 0
+         host: www.hiyzx.cn
+         port: 6379
+         password: yzx362311
+
+wx:
+  token: hiyzx
+  appID: wx7b599c0943fb598f
+  appSecret: e7cc529826c287c10291f8e1f49c6a26
+http:
+  wx:
+    scheme: https
+    hostname: api.weixin.qq.com
+    port: 443

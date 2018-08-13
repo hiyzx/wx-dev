@@ -4,28 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * @author yezhaoxing
  * @date 2017/11/01
  */
 @Slf4j
-public class WeChatUtil {
-
-    /**
-     * 排序方法
-     */
-    public static String sort(String token, String timestamp, String nonce) {
-        String[] strArray = { token, timestamp, nonce };
-        Arrays.sort(strArray);
-
-        StringBuilder sbuilder = new StringBuilder();
-        for (String str : strArray) {
-            sbuilder.append(str);
-        }
-        return sbuilder.toString();
-    }
+public class SHA1Util {
 
     public static String SHA1(String decript) {
         try {
