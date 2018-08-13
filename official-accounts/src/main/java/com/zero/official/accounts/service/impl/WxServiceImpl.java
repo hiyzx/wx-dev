@@ -30,7 +30,7 @@ public class WxServiceImpl implements IWxService {
     @Resource
     private HttpClient wxHttpClient;
     @Resource
-    private RedisHelper redisHelper;
+    private RedisHelper<String,String> redisHelper;
 
     @Override
     public void checkSignature(String signature, String timestamp, String nonce) throws BaseException {
