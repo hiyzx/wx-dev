@@ -4,7 +4,7 @@ import com.zero.official.accounts.web.exception.BaseException;
 
 /**
  * @author yezhaoxing
- * @since 2018/08/13
+ * @date 2018/08/13
  */
 public interface IWxService {
 

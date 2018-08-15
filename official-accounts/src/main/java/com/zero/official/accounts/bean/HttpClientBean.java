@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 /**
  * @author yezhaoxing
- * @since 2018/08/07
+ * @date 2018/08/07
  */
 @Configuration
 public class HttpClientBean {

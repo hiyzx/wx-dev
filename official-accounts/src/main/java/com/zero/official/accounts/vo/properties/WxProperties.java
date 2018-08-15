@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * @author yezhaoxing
- * @since 2018/08/13
+ * @date 2018/08/13
  */
 @Component
 @ConfigurationProperties(prefix = "wx")

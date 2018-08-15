@@ -20,14 +20,15 @@ public enum CodeEnum implements StringEnum {
 
     FAIL("999999");
 
-    private String CodeEnum;
+    private String codeEnum;
 
     private CodeEnum(String value) {
-        this.CodeEnum = value;
+        this.codeEnum = value;
     }
 
+    @Override
     public String getCodeEnum() {
-        return CodeEnum;
+        return codeEnum;
     }
 
 }

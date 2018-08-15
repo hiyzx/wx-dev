@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 @RestController("/wx")
@@ -45,11 +44,11 @@ public class WxController {
         String ToUserName = (String) map.get("ToUserName");
         String FromUserName = (String) map.get("FromUserName");
         String CreateTime = (String) map.get("CreateTime");
-        String MsgType = (String) map.get("MsgType");
+        String MsgType = (String) map.get("MshgType");
         String Content = (String) map.get("Content");
         String MsgId = (String) map.get("MsgId");
 
-        if (MsgType.equals("text")) {// 判断消息类型是否是文本消息(text)
+        if ("text".equals(MsgType)) {// 判断消息类型是否是文本消息(text)
 
             XmlMessage message = new XmlMessage();
 
@@ -59,7 +58,7 @@ public class WxController {
 
             message.setMsgType("text");
 
-            message.setCreateTime(new Date().getTime());// 创建当前时间为消息时间
+            message.setCreateTime(System.currentTimeMillis());// 创建当前时间为消息时间
 
             message.setContent("您好，" + FromUserName + "\n我是：" + ToUserName
 
