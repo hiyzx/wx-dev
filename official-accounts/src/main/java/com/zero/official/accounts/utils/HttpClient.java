@@ -1,19 +1,5 @@
 package com.zero.official.accounts.utils;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
-
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
@@ -40,6 +26,19 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * HTTP连接池
@@ -120,6 +119,10 @@ public class HttpClient {
         CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm)
                 .setRetryHandler(httpRequestRetryHandler).build();
         return httpClient;
+    }
+
+    public String post(String path, Map<String, String> urlParam) throws IOException {
+        return post(path, Collections.emptyMap(), Collections.emptyMap(), urlParam);
     }
 
     public String post(String path, Map<String, String> params, Map<String, String> headers,

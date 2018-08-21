@@ -18,6 +18,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
+/**
+ * @author yezhaoxing
+ * @date 2018/8/15
+ */
 @RestController("/wx")
 @Slf4j
 public class WxController {

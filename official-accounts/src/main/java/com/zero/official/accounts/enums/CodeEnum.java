@@ -18,7 +18,9 @@ public enum CodeEnum implements StringEnum {
 
     SUCCESS("000000"),
 
-    FAIL("999999");
+    FAIL("999999"),
+
+    WX_REQUEST_FAIL("601");
 
     private String codeEnum;
 

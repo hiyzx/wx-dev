@@ -75,13 +75,4 @@ public class WxServiceImpl implements IWxService {
             return accessToken;
         }
     }
-
-    @Override
-    public String getMenu() throws BaseException {
-        String uri = "/cgi-bin/menu/get";
-        Map<String, String> params = new HashMap<>(1);
-        String accessToken = getAccessToken();
-        params.put("access_token", accessToken);
-        return wxHttpClient.get(uri, params, Collections.emptyMap());
-    }
 }

@@ -19,9 +19,4 @@ public class WxManagerController {
     public String getAccessToken() throws BaseException{
         return wxService.getAccessToken();
     };
-
-    @GetMapping("/getMenu")
-    public String getMenu() throws BaseException{
-        return wxService.getMenu();
-    }
 }

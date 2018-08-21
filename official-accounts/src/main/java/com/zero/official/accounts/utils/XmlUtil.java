@@ -38,6 +38,9 @@ public class XmlUtil {
         for (Element e : list) {
             map.put(e.getName(), e.getText());// 遍历list对象，并将结果保存到集合中
         }
+        Map<String, String> params = new HashMap<>();
+        XmlMessage xmlMessage = new XmlMessage();
+
         is.close();
         return map;
     }
