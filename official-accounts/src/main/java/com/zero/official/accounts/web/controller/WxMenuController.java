@@ -1,19 +1,16 @@
 package com.zero.official.accounts.web.controller;
 
-import java.io.IOException;
-
-import javax.annotation.Resource;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.zero.official.accounts.service.IWxMenuService;
 import com.zero.official.accounts.vo.BaseReturnVo;
 import com.zero.official.accounts.vo.wx.dto.menu.WxMenuDto;
 import com.zero.official.accounts.vo.wx.response.menu.WxMenuResult;
 import com.zero.official.accounts.web.exception.BaseException;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * @author yezhaoxing
@@ -21,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/manager/menu")
-@Api("菜单相关接口")
+@Api(description = "菜单相关接口")
 public class WxMenuController {
 
     @Resource

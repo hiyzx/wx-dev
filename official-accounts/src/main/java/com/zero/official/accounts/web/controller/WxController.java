@@ -3,6 +3,7 @@ package com.zero.official.accounts.web.controller;
 import com.zero.official.accounts.service.IWxService;
 import com.zero.official.accounts.utils.XmlUtil;
 import com.zero.official.accounts.vo.wx.XmlMessage;
+import com.zero.official.accounts.vo.wx.XmlMessageSend;
 import com.zero.official.accounts.web.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.DocumentException;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author yezhaoxing
@@ -42,28 +45,47 @@ public class WxController {
 
         XmlMessage xmlMessage = XmlMessage.value(XmlUtil.xmlToMap(request));
 
-        /*if ("text".equals(MsgType)) {// 判断消息类型是否是文本消息(text)
+        String msgType = xmlMessage.getMsgType();
+        log.info(xmlMessage.toString());
+        log.info(xmlMessage.toString());
+        if ("event".equals(msgType)) {
+            String event = xmlMessage.getEvent();
+            if ("subscribe".equals(event)) {
+                sendMsg(out, XmlMessageSend.value(xmlMessage.getFromUserName(), xmlMessage.getToUserName(),
+                        "来日方长，我们终于遇见了。"));
+            } else if ("unsubscribe".equals(event)) {
+                log.info("{} 取消关注了", xmlMessage.getFromUserName());
+            } else if ("click".equals(event)) {
 
-            XmlMessage message = new XmlMessage();
+            } else if ("view".equals(event)) {
 
-            message.setFromUserName(ToUserName);// 原来【接收消息用户】变为回复时【发送消息用户】
+            }
+        } else if ("location".equals(msgType)) {
+            sendMsg(out,
+                    XmlMessageSend.value(xmlMessage.getFromUserName(), xmlMessage.getToUserName(),
+                            String.format("您的地理位置为%s,经度为%s,维度为%s", xmlMessage.getLabel(), xmlMessage.getLocation_X(),
+                                    xmlMessage.getLocation_Y())));
+        } else if ("text".equals(msgType)) {
+            sendMsg(out, XmlMessageSend.value(xmlMessage.getFromUserName(), xmlMessage.getToUserName(),
+                    getContent(xmlMessage.getContent())));
+        }
+    }
 
-            message.setToUserName(FromUserName);
+    private void sendMsg(PrintWriter out, XmlMessageSend xmlMessageSend) {
+        String str = XmlUtil.objectToXml(xmlMessageSend); // 调用Message工具类，将对象转为XML字符串
+        out.print(str);
+        out.close();
+    }
 
-            message.setMsgType("text");
+    private String getContent(String content) {
+        String response = defaultMsg().get(content);
+        return response != null ? response : "风太大,我听不清！";
+    }
 
-            message.setCreateTime(System.currentTimeMillis());// 创建当前时间为消息时间
-
-            message.setContent("您好，" + FromUserName + "\n我是：" + ToUserName
-
-                    + "\n您发送的消息类型为：" + MsgType + "\n您发送的时间为" + CreateTime
-
-                    + "\n我回复的时间为：" + message.getCreateTime() + "\n您发送的内容是" + Content);
-
-            str = XmlUtil.objectToXml(message); // 调用Message工具类，将对象转为XML字符串
-
-            out.print(str);
-            out.close();
-        }*/
+    private Map<String, String> defaultMsg() {
+        Map<String, String> msgMap = new HashMap<>();
+        msgMap.put("外卖", "www.hiyzx.cn");
+        msgMap.put("美食", "hello world");
+        return msgMap;
     }
 }

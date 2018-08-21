@@ -1,7 +1,7 @@
 package com.zero.official.accounts.utils;
 
 import com.thoughtworks.xstream.XStream;
-import com.zero.official.accounts.vo.wx.XmlMessage;
+import com.zero.official.accounts.vo.wx.XmlMessageSend;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -37,7 +37,7 @@ public class XmlUtil {
     /**
      * 将文本消息对象转化成XML格式
      */
-    public static String objectToXml(XmlMessage message) {
+    public static String objectToXml(XmlMessageSend message) {
         XStream xs = new XStream();
         // 由于转换后xml根节点默认为class类，需转化为
         xs.alias("xml", message.getClass());

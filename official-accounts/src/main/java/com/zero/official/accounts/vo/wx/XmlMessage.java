@@ -1,7 +1,6 @@
 package com.zero.official.accounts.vo.wx;
 
 import cn.hutool.core.map.MapUtil;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
 
 import java.util.Map;
@@ -11,23 +10,25 @@ import java.util.Map;
  * @date 2018/08/13
  */
 @Data
-@XStreamAlias("XmlMessage")
 public class XmlMessage {
 
-    @XStreamAlias("ToUserName")
     private String ToUserName;
-    @XStreamAlias("FromUserName")
     private String FromUserName;
-    @XStreamAlias("CreateTime")
     private Long CreateTime;
-    @XStreamAlias("MsgType")
     private String MsgType;
-    @XStreamAlias("Content")
     private String Content;
-    @XStreamAlias("MsgId")
     private String MsgId;
+    private String Event;
+    /*private String Latitude;
+    private String Longitude;
+    private String Precision;*/
+    private String EventKey;
+    private String Label;
+    private String Location_X;
+    private String Location_Y;
+    private String Scale;
 
-    public static XmlMessage value(Map<String,Object> xmlMap){
+    public static XmlMessage value(Map<String, Object> xmlMap) {
         XmlMessage xmlMessage = new XmlMessage();
         xmlMessage.setToUserName(MapUtil.getStr(xmlMap, "ToUserName"));
         xmlMessage.setFromUserName(MapUtil.getStr(xmlMap, "FromUserName"));
@@ -35,6 +36,12 @@ public class XmlMessage {
         xmlMessage.setMsgType(MapUtil.getStr(xmlMap, "MsgType"));
         xmlMessage.setContent(MapUtil.getStr(xmlMap, "Content"));
         xmlMessage.setMsgId(MapUtil.getStr(xmlMap, "MsgId"));
+        xmlMessage.setEvent(MapUtil.getStr(xmlMap, "Event"));
+        xmlMessage.setLabel(MapUtil.getStr(xmlMap, "Label"));
+        xmlMessage.setLocation_X(MapUtil.getStr(xmlMap, "Location_X"));
+        xmlMessage.setLocation_Y(MapUtil.getStr(xmlMap, "Location_Y"));
+        xmlMessage.setScale(MapUtil.getStr(xmlMap, "Scale"));
+        xmlMessage.setEventKey(MapUtil.getStr(xmlMap, "EventKey"));
         return xmlMessage;
     }
 }
