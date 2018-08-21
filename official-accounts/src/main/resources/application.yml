@@ -15,10 +15,13 @@ spring:
 
 wx:
   token: hiyzx
-  appID: wx7b599c0943fb598f
-  appSecret: e7cc529826c287c10291f8e1f49c6a26
+  appID: wxebe3398569e96ff9
+  appSecret: fe86f9b1b4da92ddba8f5d511091806d
 http:
   wx:
     scheme: https
     hostname: api.weixin.qq.com
     port: 443
+
+project:
+  version: @project.version@

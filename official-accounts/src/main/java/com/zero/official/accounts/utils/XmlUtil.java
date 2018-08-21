@@ -17,16 +17,8 @@ import java.util.Map;
 public class XmlUtil {
 
     /**
-     * 
-     * 新建方法，将接收到的XML格式，转化为Map对象
-     * 
-     * @param request
-     *            将request对象，通过参数传入
-     * 
-     * @return 返回转换后的Map对象
-     * 
+     * 接收到的XML格式，转化为Map对象
      */
-
     public static Map<String, Object> xmlToMap(HttpServletRequest request) throws IOException, DocumentException {
         Map<String, Object> map = new HashMap<>();
         // 从dom4j的jar包中，拿到SAXReader对象。
@@ -38,24 +30,14 @@ public class XmlUtil {
         for (Element e : list) {
             map.put(e.getName(), e.getText());// 遍历list对象，并将结果保存到集合中
         }
-        Map<String, String> params = new HashMap<>();
-        XmlMessage xmlMessage = new XmlMessage();
-
         is.close();
         return map;
     }
 
     /**
-     * 
      * 将文本消息对象转化成XML格式
-     * 
-     * @param message
-     *            文本消息对象
-     * @return 返回转换后的XML格式
-     * 
      */
     public static String objectToXml(XmlMessage message) {
-
         XStream xs = new XStream();
         // 由于转换后xml根节点默认为class类，需转化为
         xs.alias("xml", message.getClass());

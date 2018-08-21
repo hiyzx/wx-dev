@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,12 +23,15 @@ import java.util.Map;
 @Service
 @Slf4j
 public class WxServiceImpl implements IWxService {
+
+    private static final String GET_TOKEN_URI = "/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
     @Resource
     private WxProperties wxProperties;
     @Resource
     private HttpClient wxHttpClient;
     @Resource
-    private RedisHelper<String,String> redisHelper;
+    private RedisHelper<String, String> redisHelper;
 
     @Override
     public void checkSignature(String signature, String timestamp, String nonce) throws BaseException {
@@ -50,11 +51,8 @@ public class WxServiceImpl implements IWxService {
     public String getAccessToken() throws BaseException {
         String accessToken = redisHelper.get("access_token");
         if (accessToken == null) {
-            Map<String, String> params = new HashMap<>();
-            params.put("grant_type", "client_credential");
-            params.put("appid", wxProperties.getAppId());
-            params.put("secret", wxProperties.getAppSecret());
-            String response = wxHttpClient.get("/cgi-bin/token", params, Collections.emptyMap());
+            String response = wxHttpClient
+                    .get(String.format(GET_TOKEN_URI, wxProperties.getAppId(), wxProperties.getAppSecret()));
             log.info(response);
             Map<String, Object> accessTokenMap = JsonHelper.readValue(response,
                     new TypeReference<Map<String, Object>>() {
@@ -69,7 +67,7 @@ public class WxServiceImpl implements IWxService {
             } else {
                 log.error("getAccessToken error：errCode={},errMsg={}", accessTokenMap.get("errcode"),
                         accessTokenMap.get("errmsg"));
-                throw new BaseException(CodeEnum.FAIL, "getAccessToken error");
+                throw new BaseException(CodeEnum.WX_REQUEST_FAIL, "getAccessToken error");
             }
         } else {
             return accessToken;

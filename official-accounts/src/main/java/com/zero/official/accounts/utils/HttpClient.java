@@ -1,5 +1,18 @@
 package com.zero.official.accounts.utils;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
+
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
@@ -26,19 +39,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
-import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * HTTP连接池
@@ -121,16 +121,19 @@ public class HttpClient {
         return httpClient;
     }
 
-    public String post(String path, Map<String, String> urlParam) throws IOException {
-        return post(path, Collections.emptyMap(), Collections.emptyMap(), urlParam);
+    public String post(String path) throws IOException {
+        return post(path, Collections.emptyMap(), Collections.emptyMap());
     }
 
-    public String post(String path, Map<String, String> params, Map<String, String> headers,
-            Map<String, String> urlParam) throws IOException {
+    public String post(String path, Map<String, String> params) throws IOException {
+        return post(path, params, Collections.emptyMap());
+    }
+
+    public String post(String path, Map<String, String> params, Map<String, String> headers) throws IOException {
         CloseableHttpResponse response = null;
         String rtn = null;
         try {
-            URI uri = createURIBuilder(path, urlParam);
+            URI uri = createURIBuilder(path);
             HttpPost httppost = new HttpPost(uri);
 
             List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -180,8 +183,6 @@ public class HttpClient {
             String result = EntityUtils.toString(entity, UTF_8);
             EntityUtils.consume(entity);
             rtn = result;
-        } catch (IOException e) {
-            throw e;
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         } finally {
@@ -211,8 +212,6 @@ public class HttpClient {
             String result = EntityUtils.toString(entity, UTF_8);
             EntityUtils.consume(entity);
             rtn = result;
-        } catch (IOException e) {
-            throw e;
         } catch (URISyntaxException e) {
             LOG.error(e.getMessage(), e);
         } finally {
@@ -227,15 +226,15 @@ public class HttpClient {
         return rtn;
     }
 
-    public String get(String path, Map<String, String> headers) {
-        return get(path, Collections.emptyMap(), headers);
+    public String get(String path) {
+        return get(path, Collections.emptyMap());
     }
 
-    public String get(String path, Map<String, String> params, Map<String, String> headers) {
+    public String get(String path, Map<String, String> headers) {
         CloseableHttpResponse response = null;
         String rtn = null;
         try {
-            URI uri = createURIBuilder(path, params);
+            URI uri = createURIBuilder(path);
             HttpGet httpget = new HttpGet(uri);
             httpget.setConfig(requestConfig);
             if (headers != null && !headers.isEmpty()) {
@@ -262,21 +261,32 @@ public class HttpClient {
         return rtn;
     }
 
-    public String get(String path) {
-        Map<String, String> params = Collections.emptyMap();
-        return get(path, params);
-    }
-
-    private URI createURIBuilder(String path, Map<String, String> params) throws URISyntaxException {
-        URIBuilder builder = new URIBuilder().setScheme(scheme).setHost(hostname).setPort(port).setPath(path);
-        for (Entry<String, String> entry : params.entrySet()) {
-            builder.addParameter(entry.getKey(), entry.getValue());
+    private URI createURIBuilder(String path) throws URISyntaxException {
+        String[] urlParts = path.split("\\?");
+        URIBuilder builder = new URIBuilder().setScheme(scheme).setHost(hostname).setPort(port).setPath(urlParts[0]);
+        if (urlParts.length > 1) {
+            for (Entry<String, String> entry : getParamsByURI(urlParts[1]).entrySet()) {
+                builder.addParameter(entry.getKey(), entry.getValue());
+            }
         }
         return builder.build();
     }
 
-    private URI createURIBuilder(String path) throws URISyntaxException {
-        Map<String, String> params = Collections.emptyMap();
-        return createURIBuilder(path, params);
+    private Map<String, String> getParamsByURI(String query) {
+        Map<String, String> params = new HashMap<>();
+        for (String param : query.split("&")) {
+            try {
+                String[] pair = param.split("=");
+                String key = URLDecoder.decode(pair[0], "UTF-8");
+                String value = "";
+                if (pair.length > 1) {
+                    value = URLDecoder.decode(pair[1], "UTF-8");
+                }
+                params.put(key, value);
+            } catch (UnsupportedEncodingException e) {
+                LOG.error(e.getMessage(), e);
+            }
+        }
+        return params;
     }
 }

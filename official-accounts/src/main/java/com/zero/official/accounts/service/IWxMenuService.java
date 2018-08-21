@@ -1,5 +1,7 @@
 package com.zero.official.accounts.service;
 
+import com.zero.official.accounts.vo.wx.dto.menu.WxMenuDto;
+import com.zero.official.accounts.vo.wx.response.menu.WxMenuResult;
 import com.zero.official.accounts.web.exception.BaseException;
 
 import java.io.IOException;
@@ -10,5 +12,7 @@ import java.io.IOException;
  */
 public interface IWxMenuService {
 
-    void createMenu(String menuJson) throws BaseException, IOException;
+    void create(WxMenuDto wxMenuDto) throws BaseException, IOException;
+
+    WxMenuResult list() throws BaseException;
 }

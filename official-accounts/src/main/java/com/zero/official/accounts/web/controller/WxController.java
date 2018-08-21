@@ -6,23 +6,20 @@ import com.zero.official.accounts.vo.wx.XmlMessage;
 import com.zero.official.accounts.web.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.DocumentException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 /**
  * @author yezhaoxing
  * @date 2018/8/15
  */
-@RestController("/wx")
+@RestController
+@RequestMapping("/wx")
 @Slf4j
 public class WxController {
 
@@ -42,17 +39,10 @@ public class WxController {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String str = null;
-        // 将request请求，传到Message工具类的转换方法中，返回接收到的Map对象
-        Map<String, Object> map = XmlUtil.xmlToMap(request);
-        // 从集合中，获取XML各个节点的内容
-        String ToUserName = (String) map.get("ToUserName");
-        String FromUserName = (String) map.get("FromUserName");
-        String CreateTime = (String) map.get("CreateTime");
-        String MsgType = (String) map.get("MshgType");
-        String Content = (String) map.get("Content");
-        String MsgId = (String) map.get("MsgId");
 
-        if ("text".equals(MsgType)) {// 判断消息类型是否是文本消息(text)
+        XmlMessage xmlMessage = XmlMessage.value(XmlUtil.xmlToMap(request));
+
+        /*if ("text".equals(MsgType)) {// 判断消息类型是否是文本消息(text)
 
             XmlMessage message = new XmlMessage();
 
@@ -74,6 +64,6 @@ public class WxController {
 
             out.print(str);
             out.close();
-        }
+        }*/
     }
 }
