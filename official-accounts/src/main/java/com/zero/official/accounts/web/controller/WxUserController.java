@@ -1,6 +1,9 @@
 package com.zero.official.accounts.web.controller;
 
 import com.zero.official.accounts.service.IWxUserService;
+import com.zero.official.accounts.vo.ReturnVo;
+import com.zero.official.accounts.vo.wx.response.user.WxUser;
+import com.zero.official.accounts.vo.wx.response.user.WxUserListResult;
 import com.zero.official.accounts.web.exception.BaseException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,13 +28,13 @@ public class WxUserController {
 
     @GetMapping("/list")
     @ApiOperation("查询用户列表")
-    public String list() throws BaseException {
-        return wxUserService.list();
+    public ReturnVo<WxUserListResult> list() throws BaseException {
+        return ReturnVo.success(wxUserService.list());
     }
 
     @GetMapping("/info/get")
     @ApiOperation("查询单个用户信息")
-    public String getInfo(@RequestParam String openid) throws BaseException {
-        return wxUserService.getInfo(openid);
+    public ReturnVo<WxUser> getInfo(@RequestParam String openid) throws BaseException {
+        return ReturnVo.success(wxUserService.getInfo(openid));
     }
 }

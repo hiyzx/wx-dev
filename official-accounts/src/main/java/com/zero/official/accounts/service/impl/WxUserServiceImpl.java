@@ -3,7 +3,10 @@ package com.zero.official.accounts.service.impl;
 import com.zero.official.accounts.service.IWxService;
 import com.zero.official.accounts.service.IWxUserService;
 import com.zero.official.accounts.utils.HttpClient;
+import com.zero.official.accounts.utils.JsonHelper;
 import com.zero.official.accounts.utils.WxUtil;
+import com.zero.official.accounts.vo.wx.response.user.WxUser;
+import com.zero.official.accounts.vo.wx.response.user.WxUserListResult;
 import com.zero.official.accounts.web.exception.BaseException;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +30,16 @@ public class WxUserServiceImpl implements IWxUserService {
     private IWxService wxService;
 
     @Override
-    public String list() throws BaseException {
+    public WxUserListResult list() throws BaseException {
         String response = wxHttpClient.get(String.format(LIST_URI, wxService.getAccessToken()));
         WxUtil.handlerException(response);
-        return response;
+        return JsonHelper.readValue(response, WxUserListResult.class);
     }
 
     @Override
-    public String getInfo(String openid) throws BaseException {
+    public WxUser getInfo(String openid) throws BaseException {
         String response = wxHttpClient.get(String.format(GET_INFO_URI, wxService.getAccessToken(), openid));
         WxUtil.handlerException(response);
-        return response;
+        return JsonHelper.readValue(response, WxUser.class);
     }
 }

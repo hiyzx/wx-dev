@@ -2,6 +2,7 @@ package com.zero.official.accounts.web.controller;
 
 import com.zero.official.accounts.service.IWxMenuService;
 import com.zero.official.accounts.vo.BaseReturnVo;
+import com.zero.official.accounts.vo.ReturnVo;
 import com.zero.official.accounts.vo.wx.dto.menu.WxMenuDto;
 import com.zero.official.accounts.vo.wx.response.menu.WxMenuResult;
 import com.zero.official.accounts.web.exception.BaseException;
@@ -33,7 +34,7 @@ public class WxMenuController {
 
     @GetMapping("/list")
     @ApiOperation("查询列表")
-    public WxMenuResult list() throws BaseException {
-        return wxMenuService.list();
+    public ReturnVo<WxMenuResult> list() throws BaseException {
+        return ReturnVo.success(wxMenuService.list());
     }
 }

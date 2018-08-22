@@ -8,10 +8,10 @@ spring:
   mvc:
     throw-exception-if-no-handler-found: true
   redis:
-         database: 0
-         host: www.hiyzx.cn
-         port: 6379
-         password: yzx362311
+        database: 0
+        host: www.hiyzx.cn
+        port: 6379
+        password: yzx362311
 
 wx:
   token: hiyzx

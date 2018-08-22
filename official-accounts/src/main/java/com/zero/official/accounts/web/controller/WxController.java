@@ -41,12 +41,10 @@ public class WxController {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        String str = null;
 
         XmlMessage xmlMessage = XmlMessage.value(XmlUtil.xmlToMap(request));
 
         String msgType = xmlMessage.getMsgType();
-        log.info(xmlMessage.toString());
         log.info(xmlMessage.toString());
         if ("event".equals(msgType)) {
             String event = xmlMessage.getEvent();
@@ -55,10 +53,9 @@ public class WxController {
                         "来日方长，我们终于遇见了。"));
             } else if ("unsubscribe".equals(event)) {
                 log.info("{} 取消关注了", xmlMessage.getFromUserName());
-            } else if ("click".equals(event)) {
-
-            } else if ("view".equals(event)) {
-
+            } else if ("CLICK".equals(event)) {
+                sendMsg(out, XmlMessageSend.value(xmlMessage.getFromUserName(), xmlMessage.getToUserName(),
+                        getClickContent(xmlMessage.getEventKey())));
             }
         } else if ("location".equals(msgType)) {
             sendMsg(out,
@@ -82,10 +79,22 @@ public class WxController {
         return response != null ? response : "风太大,我听不清！";
     }
 
+    private String getClickContent(String content) {
+        return clickMsg().get(content);
+    }
+
     private Map<String, String> defaultMsg() {
         Map<String, String> msgMap = new HashMap<>();
         msgMap.put("外卖", "www.hiyzx.cn");
         msgMap.put("美食", "hello world");
+        return msgMap;
+    }
+
+    private Map<String, String> clickMsg() {
+        Map<String, String> msgMap = new HashMap<>();
+        msgMap.put("listening", "http://www.kugou.com/");
+        msgMap.put("watching", "https://www.youku.com/");
+        msgMap.put("badminto", "http://sports.sina.com.cn/nba/");
         return msgMap;
     }
 }

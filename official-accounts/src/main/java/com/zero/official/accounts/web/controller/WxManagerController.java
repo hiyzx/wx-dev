@@ -1,6 +1,7 @@
 package com.zero.official.accounts.web.controller;
 
 import com.zero.official.accounts.service.IWxService;
+import com.zero.official.accounts.vo.ReturnVo;
 import com.zero.official.accounts.web.exception.BaseException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class WxManagerController {
 
     @GetMapping("/getAccessToken")
     @ApiOperation("获取token")
-    public String getAccessToken() throws BaseException{
-        return wxService.getAccessToken();
+    public ReturnVo<String> getAccessToken() throws BaseException{
+        return ReturnVo.success(wxService.getAccessToken());
     };
 }
