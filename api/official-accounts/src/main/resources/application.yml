@@ -12,6 +12,11 @@ spring:
         host: www.hiyzx.cn
         port: 6379
         password: yzx362311
+        lettuce:
+          pool:
+            max-active: 8
+            max-idle: 8
+            min-idle: 0
 
 wx:
   token: hiyzx
@@ -25,3 +30,9 @@ http:
 
 project:
   version: @project.version@
+
+# 描述信息
+info:
+  author: zero
+  version: @project.version@
+  buildTime: @project.build.time@
