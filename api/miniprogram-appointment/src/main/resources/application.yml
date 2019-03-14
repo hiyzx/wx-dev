@@ -3,26 +3,37 @@ server:
   servlet:
     context-path: /appointment
 spring:
-  resources:
-    add-mappings: false
-  mvc:
-    throw-exception-if-no-handler-found: true
-  redis:
-        database: 0
-        host: www.hiyzx.cn
-        port: 6379
-        password: yzx362311
-        lettuce:
-          pool:
-            max-active: 8
-            max-idle: 8
-            min-idle: 0
-
-project:
-  version: @project.version@
-
-# 描述信息
-info:
-  author: zero
-  version: @project.version@
-  buildTime: @project.build.time@
+  datasource:
+    url: jdbc:mysql://www.hiyzx.cn:3306/appointment?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: yzx362311
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+          connection-test-query: select 1 from dual
+          connection-timeout: 30000
+          idle-timeout: 60000
+          max-lifetime: 1800000
+          maximum-pool-size: 50
+          minimum-idle: 50
+mybatis:
+    type-aliases-package: org.zero.spring.mybatis.po
+    mapper-locations: classpath:org.zero.miniprogram.appointment.dao/*.xml
+    configuration:
+      cache-enabled: true
+mapper:
+    mappers:
+        - org.zero.miniprogram.appointment.config.MyMapper
+    not-empty: false
+    identity: MYSQL
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+logging:
+  level:
+    org.springframework.web: info
+    springframework.transaction: info
+    org.mybatis: info
+    org.zero: info
